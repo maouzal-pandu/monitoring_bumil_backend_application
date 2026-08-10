@@ -4,7 +4,6 @@ from sqlalchemy import (
     Date,
     DateTime,
     Enum,
-    Float,
     ForeignKey,
     Integer,
     func,
@@ -37,4 +36,5 @@ class Kehamilan(Base):
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
-    user = relationship("User", backref="kehamilan_list")
+    user = relationship("User", back_populates="kehamilan")
+    pemeriksaan = relationship("Pemeriksaan", back_populates="kehamilan")

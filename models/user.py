@@ -1,3 +1,5 @@
+from sqlalchemy.orm import relationship
+
 from config.database import Base
 from sqlalchemy import (
     TIMESTAMP,
@@ -29,3 +31,6 @@ class User(Base):
     role = Column(Enum("admin", "bidan", "bumil", name="role_enum"), nullable=False)
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    kehamilan = relationship("Kehamilan", back_populates="user")
+    pemeriksaan_dilakukan = relationship("Pemeriksaan", back_populates="bidan")
