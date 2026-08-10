@@ -16,7 +16,7 @@ from sqlalchemy.sql import func
 class User(Base):
     __tablename__ = "user"
 
-    id = Column(Integer, index=True, primary_key=True)
+    id = Column(Integer, primary_key=True)
     nama = Column(String(100), nullable=False)
     nik = Column(String(25), nullable=False, unique=True)
     email = Column(String(255), unique=True, nullable=False)
