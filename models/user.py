@@ -7,6 +7,7 @@ from sqlalchemy import (
     Date,
     DateTime,
     Enum,
+    ForeignKey,
     Integer,
     Numeric,
     String,
@@ -25,6 +26,7 @@ class User(Base):
     nomer_telepon = Column(String(25), nullable=False, unique=True)
     password = Column(String(255), nullable=False)
     alamat = Column(Text)
+    desa_id = Column(Integer, ForeignKey("desa.id"), nullable=False, index=True)
     latitude = Column(Numeric(9, 6))
     longitude = Column(Numeric(9, 6))
     tanggal_lahir = Column(Date, nullable=False)
@@ -34,3 +36,4 @@ class User(Base):
 
     kehamilan = relationship("Kehamilan", back_populates="user")
     pemeriksaan_dilakukan = relationship("Pemeriksaan", back_populates="bidan")
+    desa = relationship("Desa", back_populates="user_list")
