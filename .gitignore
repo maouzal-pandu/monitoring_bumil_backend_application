@@ -1,3 +1,10 @@
 __pycache__/
 .venv/
 .env
+alembic/__pycache__/
+alembic/versions/__pycache__/
+*.pyc
+__pycache__/
+*.pyo
+.venv/
+.env
