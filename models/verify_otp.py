@@ -1,13 +1,6 @@
-from sqlalchemy import (
-    Boolean,
-    Column,
-    DateTime,
-    Enum,
-    ForeignKey,
-    Integer,
-    String,
-    func,
-)
+from datetime import datetime
+from sqlalchemy import Integer, String, ForeignKey, Boolean, Enum, DateTime, func
+from sqlalchemy.orm import Mapped, mapped_column
 
 from config.database import Base
 
@@ -15,10 +8,16 @@ from config.database import Base
 class VerifyOtp(Base):
     __tablename__ = "verify_otp"
 
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("user.id"), nullable=False, index=True)
-    otp = Column(String(255), nullable=False, index=True)
-    is_used = Column(Boolean, nullable=False, default=False)
-    tujuan = Column(Enum("registrasi", "reset_password", name="otp_tujuan_enum"))
-    expired_at = Column(DateTime, nullable=False)
-    created_at = Column(DateTime, nullable=False, server_default=func.now())
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    email: Mapped[str] = mapped_column(
+        String(255), ForeignKey("user.email"), nullable=False, index=True
+    )
+    otp: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
+    is_used: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    tujuan: Mapped[str] = mapped_column(
+        Enum("registrasi", "reset_password", name="otp_tujuan_enum")
+    )
+    expired_at: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False, server_default=func.now()
+    )
