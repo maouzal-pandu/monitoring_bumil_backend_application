@@ -36,7 +36,6 @@ class LoginSchema(BaseModel):
 
 class VerifyOtpSchema(BaseModel):
     email: EmailStr
-    purpose: PurposeEnum
     code: str = Field(min_length=6, max_length=6, pattern=r"^\d{6}$")
 
 
@@ -45,6 +44,7 @@ class ForgotPasswordSchema(BaseModel):
 
 
 class ResetPasswordSchema(BaseModel):
+    reset_token: str
     password: str
 
 
