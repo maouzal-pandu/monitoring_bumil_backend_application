@@ -220,3 +220,10 @@ def reset_password(payload: ResetPasswordSchema, db: Session = Depends(get_db)):
     otp.reset_token = None
     db.commit()
     return {"message": "Password berhasil direset"}
+
+
+@router.get("/desa")
+def get_desas(db: Session = Depends(get_db)):
+    desa = db.query(Desa).all()
+
+    return desa
