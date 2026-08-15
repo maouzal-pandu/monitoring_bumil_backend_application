@@ -6,3 +6,5 @@ from schemas.auth import (
     ResetPasswordSchema,
     ChangePasswordSchema,
 )
+
+from schemas.kehamilan import SetHphtSchema
