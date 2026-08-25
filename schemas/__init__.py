@@ -8,7 +8,8 @@ from schemas.auth import (
 )
 
 from schemas.kehamilan import SetHphtSchema
-from schemas.kehamilan import (
-    SetAntenatalCareSchedule,
-    ChangeAncScheduleStatus,
+from schemas.jadwal_anc import (
+    SetScheduleSchema,
+    CancelScheduleSchema,
+    EditScheduleSchema,
 )

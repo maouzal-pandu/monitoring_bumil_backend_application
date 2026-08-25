@@ -5,8 +5,9 @@ from sqlalchemy.orm import Session
 from config.database import get_db
 from schemas import (
     SetHphtSchema,
-    SetAntenatalCareSchedule,
-    ChangeAncScheduleStatus,
+    SetScheduleSchema,
+    CancelScheduleSchema,
+    EditScheduleSchema,
 )
 from models import User, Kehamilan, ScheduleAnc, StatusJadwalAnc
 
@@ -52,9 +53,7 @@ def set_hpht(payload: SetHphtSchema, db: Session = Depends(get_db)):
 
 
 @router.post("/set-jadwal-anc")
-def setAntenatalCareSchedule(
-    payload: SetAntenatalCareSchedule, db: Session = Depends(get_db)
-):
+def setAntenatalCareSchedule(payload: SetScheduleSchema, db: Session = Depends(get_db)):
     kehamilan = db.query(Kehamilan).filter(Kehamilan.id == payload.kehamilan_id).first()
 
     if kehamilan is None:
@@ -76,9 +75,9 @@ def setAntenatalCareSchedule(
     return {"message": "Berhasil mengatur jadwal anc"}
 
 
-@router.post("/change-jadwal-anc-status")
+@router.post("/cancel-jadwal-anc")
 def changeScheduleAncStatus(
-    payload: ChangeAncScheduleStatus, db: Session = Depends(get_db)
+    payload: CancelScheduleSchema, db: Session = Depends(get_db)
 ):
     schedule_anc = (
         db.query(ScheduleAnc).filter(ScheduleAnc.id == payload.schedule_id).first()
@@ -87,7 +86,7 @@ def changeScheduleAncStatus(
     if schedule_anc is None:
         raise HTTPException(404, "Id jadwal anc tidak ditemukan")
 
-    schedule_anc.status = payload.status
+    schedule_anc.status = StatusJadwalAnc.dibatalkan
     db.add(schedule_anc)
     db.commit()
 
@@ -109,3 +108,20 @@ def getAntenatalCareSchedule(kehamilan_id: int, db: Session = Depends(get_db)):
     )
 
     return schedule_anc
+
+
+@router.post("/edit-jadwal-anc")
+def editAntenetalCareSchedule(
+    payload: EditScheduleSchema, db: Session = Depends(get_db)
+):
+    schedule = db.query(ScheduleAnc).filter(ScheduleAnc.id == payload.id).first()
+
+    if schedule is None:
+        raise HTTPException(404, "Id tidak ditemukan")
+
+    schedule.tanggal_jadwal = payload.tanggal
+    schedule.catatan = payload.catatan
+
+    db.commit()
+
+    return {"message": "Berhasil mengubah jadwal"}
