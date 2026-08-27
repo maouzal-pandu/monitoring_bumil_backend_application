@@ -1,10 +1,17 @@
 from datetime import date, datetime
 from decimal import Decimal
+import enum
 
 from sqlalchemy import DECIMAL, Date, DateTime, Enum, ForeignKey, Integer, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from config.database import Base
+
+
+class StatusRisiko(enum.Enum):
+    rendah = "rendah"
+    sedang = "sedang"
+    tinggi = "tinggi"
 
 
 class Kehamilan(Base):
@@ -25,7 +32,7 @@ class Kehamilan(Base):
         nullable=False,
     )
     status_risiko: Mapped[str] = mapped_column(
-        Enum("rendah", "sedang", "tinggi", name="risiko_enum"),
+        Enum(StatusRisiko),
         default="rendah",
         nullable=False,
     )
